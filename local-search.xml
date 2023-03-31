@@ -4,11 +4,11 @@
   
   
   <entry>
-    <title>vue和vue3的不同</title>
-    <link href="/2022/04/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/"/>
-    <url>/2022/04/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/</url>
+    <title>第一个博客</title>
+    <link href="/2022/04/21/%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2/"/>
+    <url>/2022/04/21/%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2/</url>
     
-    <content type="html"><![CDATA[<h2 id="vue2-和-vue3-的生命周期不同"><a href="#vue2-和-vue3-的生命周期不同" class="headerlink" title="vue2 和 vue3 的生命周期不同"></a>vue2 和 vue3 的生命周期不同</h2><ul><li>vue2 销毁阶段的生命周期是 beforeDestory 和 destoryed</li><li>vue3 销毁阶段的生命周期是 beforeUnmount 和 unmounted</li></ul>]]></content>
+    <content type="html"><![CDATA[<h3 id="运行命令"><a href="#运行命令" class="headerlink" title="运行命令"></a>运行命令</h3><ul><li>hexo generate 编译</li><li>hexo deploy 提交</li></ul>]]></content>
     
     
     
@@ -17,11 +17,11 @@
   
   
   <entry>
-    <title>第一个博客</title>
-    <link href="/2022/04/21/%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2/"/>
-    <url>/2022/04/21/%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2/</url>
+    <title>vue和vue3的不同</title>
+    <link href="/2022/04/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/"/>
+    <url>/2022/04/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/</url>
     
-    <content type="html"><![CDATA[<h3 id="运行命令"><a href="#运行命令" class="headerlink" title="运行命令"></a>运行命令</h3><ul><li>hexo generate 编译</li><li>hexo deploy 提交</li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="vue2-和-vue3-的生命周期不同"><a href="#vue2-和-vue3-的生命周期不同" class="headerlink" title="vue2 和 vue3 的生命周期不同"></a>vue2 和 vue3 的生命周期不同</h2><ul><li>vue2 销毁阶段的生命周期是 beforeDestory 和 destoryed</li><li>vue3 销毁阶段的生命周期是 beforeUnmount 和 unmounted</li></ul>]]></content>
     
     
     
