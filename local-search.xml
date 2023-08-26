@@ -4,38 +4,37 @@
   
   
   <entry>
+    <title>pubsub的简单实现</title>
+    <link href="/2022/11/23/pubsub%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
+    <url>/2022/11/23/pubsub%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    
+    <content type="html"><![CDATA[<p>pubsub 是 vue 组件通信中常用的一种方式</p><p><strong>pubsub 的基本实现</strong></p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> pubsub = &#123;<br>  <span class="hljs-attr">content</span>: &#123;&#125;,<br>  <span class="hljs-attr">on</span>: <span class="hljs-function">(<span class="hljs-params">name, cb</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">//存储到content中 以传入的名字为键名 回调函数为键值</span><br>    pubsub.<span class="hljs-property">content</span>.<span class="hljs-property">name</span> = cb;<br>  &#125;,<br>  <span class="hljs-attr">emit</span>: <span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">//当调用emit的方法的时候 就去调用content中对应的方法</span><br>    pubsub.<span class="hljs-property">content</span>.<span class="hljs-title function_">name</span>();<br>  &#125;,<br>&#125;;<br><br>pubsub.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">111</span>);<br>&#125;);<br>pubsub.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;a&quot;</span>);<br></code></pre></td></tr></table></figure><p>进阶 因为可能会多次创建同一个 所以要遍历 还可以传递参数</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs javascript">pubsub = &#123;<br>  <span class="hljs-attr">content</span>: &#123;&#125;,<br>  <span class="hljs-attr">on</span>: <span class="hljs-function">(<span class="hljs-params">name, cb</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 如果不是数组先给它边成数组  然后再push</span><br>    <span class="hljs-keyword">if</span> (!<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(pubsub.<span class="hljs-property">content</span>.<span class="hljs-property">name</span>)) &#123;<br>      pubsub.<span class="hljs-property">content</span>.<span class="hljs-property">name</span> = [];<br>    &#125;<br>    pubsub.<span class="hljs-property">content</span>.<span class="hljs-property">name</span>.<span class="hljs-title function_">push</span>(cb);<br>  &#125;,<br>  <span class="hljs-comment">// 传递参数</span><br>  <span class="hljs-attr">emit</span>: <span class="hljs-function">(<span class="hljs-params">name, ccc</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 遍历调用</span><br>    pubsub.<span class="hljs-property">content</span>.<span class="hljs-property">name</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>      <span class="hljs-title function_">item</span>(ccc);<br>    &#125;);<br>  &#125;,<br>&#125;;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(pubsub.<span class="hljs-property">content</span>);<br>pubsub.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">111</span>);<br>&#125;);<br>pubsub.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-function">(<span class="hljs-params">ccc</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ccc);<br>&#125;);<br>pubsub.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-number">555</span>);<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>简单的原理</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>vue2的一些总结</title>
-    <link href="/2022/05/04/vue2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/"/>
-    <url>/2022/05/04/vue2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/</url>
+    <link href="/2022/11/04/vue2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/"/>
+    <url>/2022/11/04/vue2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/</url>
     
     <content type="html"><![CDATA[]]></content>
     
     
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>vue2和vue3的响应式原理</title>
-    <link href="/2022/05/03/vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/"/>
-    <url>/2022/05/03/vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
-    
-    <content type="html"><![CDATA[<h3 id="vue2-的响应式原理"><a href="#vue2-的响应式原理" class="headerlink" title="vue2 的响应式原理"></a>vue2 的响应式原理</h3><ol><li><p>数据代理<br>遍历 data 中的所有的数据，利用 Object.defineProperty 方法将 data 中的所有数据代理到组件实例上，同时设置获取属性值的 get 方法 和设置属性值的 set 方法，这样就可以直接调用 this.xxx 来拿到 data 中的数据</p></li><li><p>数据劫持<br>遍历 data 中的所有的属性，创建属性对应的 dep 对象，使用 Object.defineProperty 方法进行重新定义数据，同时设置获取属性值的 get 方法和设置属性值的 set 方法</p><ul><li>当获取数据的时候就会触发 get 方法，会返回属性的值，同时会触发 dep.depend(),同时建立响应式联系，响应式联系就是，dep 中保存 watcher，watcher 中保存 dep</li><li>当修改数据的时候就会触发 set 方法，内部会同步更新值，同时会触发 dep.notify(),遍历 dep 中保存的 watcher,调用 watcher 的方法将更新用户界面的方法添加异步队列，等待异步更新（更新数据是同步的，更新用户界面是异步的），</li></ul></li><li><p>页面的解析渲染<br>首先 new Watcher，然后内部会调用方法进行页面初始化渲染，初始化渲染过程中会构建虚拟 DOM 树，此时会读取表达式的值，会触发数据代理的 get，又触发数据劫持的 get，此时会通过 dep.depend 建立响应式联系，构建完虚拟 DOM 树，将会虚拟 DOM 树解析成真实 DOM 元素，插入页面生效</p></li><li><p>页面更新渲染<br>当更新 data 数据时，就会触发数据代理阶段给属性设置的 set 方法，方法内部实际更新的是原 data 数据，又会触发数据劫持阶段给属性设置的 set 方法，此时会同步更新数据的值，同时触发 dep.notify()方法遍历 dep 保存的 watcher 将更新用户界面的方法添加到异步队列，等待异步更新</p></li></ol>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>vue的生命周期</title>
-    <link href="/2022/04/22/vue%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
-    <url>/2022/04/22/vue%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
-    
-    <content type="html"><![CDATA[<!-- more --><h2 id="vue2-中的生命周期"><a href="#vue2-中的生命周期" class="headerlink" title="vue2 中的生命周期"></a>vue2 中的生命周期</h2><ul><li><p>初始化阶段：</p><ul><li>beforeCreate:</li><li>created:</li></ul></li><li><p>挂载阶段：</p><ul><li>beforeMount:</li><li>mounted:（可以拿到数据和方法与页面元素）用来发送请求、设置定时器、绑定事件等任务</li></ul></li><li><p>更新阶段</p><ul><li>beforeUpdate:数据已经更新，视图没有更新</li><li>updated:数据和视图都更新了</li></ul></li><li><p>销毁阶段：</p><ul><li>beforeDestroy:用来解绑定时器，解绑事件等收尾工作</li><li>destroyed:全部销毁</li></ul></li><li><p>其他的一些生命周期函数</p><ol><li>被 keep-alive 缓存的路由<ul><li>activated：路由激活</li><li>deactivated：路由失活</li></ul></li><li>捕获后代组件产生的错误<br>errorCaptured</li></ol></li></ul><p><img src="https://s1.locimg.com/2023/04/01/fc5a7b4eba14d.png"></p><h2 id="vu3-的生命周期"><a href="#vu3-的生命周期" class="headerlink" title="vu3 的生命周期"></a>vu3 的生命周期</h2><ul><li><p>vue3 的生命周期函数基本和 vue2 一致</p></li><li><p>销毁阶段的生命周期不一致<br>vue3 中销毁阶段的生命周期函数是 beforeUnmount 和 unmounted</p></li><li><p>其他保持一致</p></li><li><p>不过在 vue3 的组合式开发模式的时候生命周期的用法不太一样<br>setup 相当于 vue2 中的 beforeCreate 和 created<br>需要在 vue 中引入 例如 onbeforeCreate oncreated 等等<br>可以重复调用</p></li></ul>]]></content>
-    
+    <categories>
+      
+      <category>vue</category>
+      
+    </categories>
     
     
   </entry>
@@ -44,10 +43,56 @@
   
   <entry>
     <title>vue2和vue3的不同</title>
-    <link href="/2022/04/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/"/>
-    <url>/2022/04/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/</url>
+    <link href="/2022/10/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/"/>
+    <url>/2022/10/21/vue2%E5%92%8Cvue3%E7%9A%84%E4%B8%8D%E5%90%8C/</url>
     
     <content type="html"><![CDATA[<!-- more --><h2 id="1-vue2-和-vue3-的生命周期不同"><a href="#1-vue2-和-vue3-的生命周期不同" class="headerlink" title="1.vue2 和 vue3 的生命周期不同"></a>1.vue2 和 vue3 的生命周期不同</h2><ul><li>vue2 销毁阶段的生命周期是 beforeDestory 和 destoryed</li><li>vue3 销毁阶段的生命周期是 beforeUnmount 和 unmounted</li></ul><h2 id="2-通信方式的不同"><a href="#2-通信方式的不同" class="headerlink" title="2.通信方式的不同"></a>2.通信方式的不同</h2><ul><li>vue3 删除了<code> $on/$off/$once</code> API 所以默认不能使用全局事件总线，如果想要使用全局事件总线，需要使用第三方库 mitt 等</li><li>vue3 删除了 v-bind:xxx.sync 修饰符，父子组件双向通信只能使用 v-model</li><li>v-model 对组件用法不一样<ul><li>vue2 中 v-model 绑定的是 value 属性和 input 自定义事件</li><li>vue3 中 v-model 绑定的是 modelValue 属性和 update:modelVluae 自定义事件</li></ul></li><li>vue3 中删除了 <code>$listeners</code>,整合到了<code>$attrs</code>中</li><li>vue3 中删除了 <code>$children</code>,获取子组件实例对象必须使用 ref<br>注：在 vue2 和 vue3 中使用 ref 也不一样<ul><li>vue2 中定义之后 可以直接使用<code>thsi.$refs</code>来获取到</li><li>vue3 中定义之后 下面使用<code>ref</code>定义一个相同的响应式数据</li></ul></li></ul><h2 id="3-指令的不同"><a href="#3-指令的不同" class="headerlink" title="3.指令的不同"></a>3.指令的不同</h2><ol><li><p>vue2 和 vue3 中<code>v-for</code>和<code>v-if</code>优先级也不同</p><ul><li>vue2 中 v-for 的优先级更高</li><li>vue3 中 v-if 的优先级更高一点</li></ul></li><li><p>vue3 中删除了 <code>v-bind</code> 中的.sync 修饰符</p></li><li><p>vue3 中新增了一个 <code>v-memo</code> 指令 用来缓存 DOM 元素</p></li></ol><h2 id="4-开发模式的不同"><a href="#4-开发模式的不同" class="headerlink" title="4.开发模式的不同"></a>4.开发模式的不同</h2><ul><li>vue2 中只能只用选项式开发模式</li><li>vue3 中不仅能使用选项式开发模式还能使用组合式开发模式</li></ul><h2 id="5-响应式原理不同"><a href="#5-响应式原理不同" class="headerlink" title="5.响应式原理不同"></a>5.响应式原理不同</h2><p><a href="/2022/05/03/vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/">详情跳转</a></p><ul><li><p>vue2 的响应式原理是 Object.defineProperty</p></li><li><p>vue3 的响应式原理是使用代理对象 Proxy</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>vue</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vue2和vue3的响应式原理</title>
+    <link href="/2022/10/03/vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/"/>
+    <url>/2022/10/03/vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h3 id="vue2-的响应式原理"><a href="#vue2-的响应式原理" class="headerlink" title="vue2 的响应式原理"></a>vue2 的响应式原理</h3><ol><li><p>数据代理<br>遍历 data 中的所有的数据，利用 Object.defineProperty 方法将 data 中的所有数据代理到组件实例上，同时设置获取属性值的 get 方法 和设置属性值的 set 方法，这样就可以直接调用 this.xxx 来拿到 data 中的数据</p></li><li><p>数据劫持<br>遍历 data 中的所有的属性，创建属性对应的 dep 对象，使用 Object.defineProperty 方法进行重新定义数据，同时设置获取属性值的 get 方法和设置属性值的 set 方法</p><ul><li>当获取数据的时候就会触发 get 方法，会返回属性的值，同时会触发 dep.depend(),同时建立响应式联系，响应式联系就是，dep 中保存 watcher，watcher 中保存 dep</li><li>当修改数据的时候就会触发 set 方法，内部会同步更新值，同时会触发 dep.notify(),遍历 dep 中保存的 watcher,调用 watcher 的方法将更新用户界面的方法添加异步队列，等待异步更新（更新数据是同步的，更新用户界面是异步的），</li></ul></li><li><p>页面的解析渲染<br>首先 new Watcher，然后内部会调用方法进行页面初始化渲染，初始化渲染过程中会构建虚拟 DOM 树，此时会读取表达式的值，会触发数据代理的 get，又触发数据劫持的 get，此时会通过 dep.depend 建立响应式联系，构建完虚拟 DOM 树，将会虚拟 DOM 树解析成真实 DOM 元素，插入页面生效</p></li><li><p>页面更新渲染<br>当更新 data 数据时，就会触发数据代理阶段给属性设置的 set 方法，方法内部实际更新的是原 data 数据，又会触发数据劫持阶段给属性设置的 set 方法，此时会同步更新数据的值，同时触发 dep.notify()方法遍历 dep 保存的 watcher 将更新用户界面的方法添加到异步队列，等待异步更新</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>简单的原理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vue</tag>
+      
+      <tag>原理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vue的生命周期</title>
+    <link href="/2022/09/22/vue%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
+    <url>/2022/09/22/vue%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
+    
+    <content type="html"><![CDATA[<!-- more --><h2 id="vue2-中的生命周期"><a href="#vue2-中的生命周期" class="headerlink" title="vue2 中的生命周期"></a>vue2 中的生命周期</h2><ul><li><p>初始化阶段：</p><ul><li>beforeCreate:</li><li>created:</li></ul></li><li><p>挂载阶段：</p><ul><li>beforeMount:</li><li>mounted:（可以拿到数据和方法与页面元素）用来发送请求、设置定时器、绑定事件等任务</li></ul></li><li><p>更新阶段</p><ul><li>beforeUpdate:数据已经更新，视图没有更新</li><li>updated:数据和视图都更新了</li></ul></li><li><p>销毁阶段：</p><ul><li>beforeDestroy:用来解绑定时器，解绑事件等收尾工作</li><li>destroyed:全部销毁</li></ul></li><li><p>其他的一些生命周期函数</p><ol><li>被 keep-alive 缓存的路由<ul><li>activated：路由激活</li><li>deactivated：路由失活</li></ul></li><li>捕获后代组件产生的错误<br>errorCaptured</li></ol></li></ul><p><img src="https://s1.locimg.com/2023/04/01/fc5a7b4eba14d.png"></p><h2 id="vu3-的生命周期"><a href="#vu3-的生命周期" class="headerlink" title="vu3 的生命周期"></a>vu3 的生命周期</h2><ul><li><p>vue3 的生命周期函数基本和 vue2 一致</p></li><li><p>销毁阶段的生命周期不一致<br>vue3 中销毁阶段的生命周期函数是 beforeUnmount 和 unmounted</p></li><li><p>其他保持一致</p></li><li><p>不过在 vue3 的组合式开发模式的时候生命周期的用法不太一样<br>setup 相当于 vue2 中的 beforeCreate 和 created<br>需要在 vue 中引入 例如 onbeforeCreate oncreated 等等<br>可以重复调用</p></li></ul>]]></content>
     
     
     
