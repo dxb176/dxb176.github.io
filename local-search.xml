@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title></title>
+    <link href="/2023/10/31/vue2%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7/"/>
+    <url>/2023/10/31/vue2%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7/</url>
+    
+    <content type="html"><![CDATA[<h1 id="vue2在360浏览器的兼容模式下显示空白"><a href="#vue2在360浏览器的兼容模式下显示空白" class="headerlink" title="vue2在360浏览器的兼容模式下显示空白"></a>vue2在360浏览器的兼容模式下显示空白</h1><ol><li><p>下载依赖’babel-polyfill’<br>  <code>yarn add babel-polyfill</code></p></li><li><p>在根目录下新建 .browserslistrc 文件</p><p><code>1% last 2 versions not ie &lt;= 8</code></p></li><li><p>在babel.config.js文件中修改为如下配置</p><p><code>presets: [[&quot;@vue/cli-plugin-babel/preset&quot;, &#123; useBuiltIns: &quot;entry&quot;, &#125;]], sourceType: &#39;unambiguous&#39;,</code></p></li><li><p>在入口文件main.js中引入babel-polyfil;并且放在首行</p><p><code>import &#39;babel-polyfill&#39;;</code></p></li><li><p>在vue.config,js文件中添加transpileDependencie</p><p>&#x2F;&#x2F;找到报错的模块 例：<br>transpileDependencies: [<br>‘sock-js’,<br>‘sockjs-client’,<br>‘socket.io-client’,<br>‘engine.io-client’,<br>‘engine.io-parser’,<br>‘socket.io-parser’,<br>‘vue-socket.io’,<br>‘@ant-design’,<br>‘crypto-js’,<br>‘vue2-editor’,<br>‘resize-detector’,<br>‘k-form-design’</p><p>]</p></li><li><p>在控制台中查看错误</p><p><img src="/" alt="./image/error.png"></p></li></ol>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>pubsub的简单实现</title>
     <link href="/2022/11/23/pubsub%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
     <url>/2022/11/23/pubsub%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
